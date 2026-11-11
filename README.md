@@ -4,7 +4,7 @@ Hito 7 - React Router II | Desafío Latam - Fullstack JS
 
 ## Accesos
 
-- **Demo (Vercel):** [pizzeria-mama-mia-hito6.vercel.app](https://pizzeria-mama-mia-hito6.vercel.app/)
+- **Demo (Vercel):** [pizzeria-mama-mia-hito7.vercel.app](https://pizzeria-mama-mia-hito7.vercel.app/)
 - **Backend / API (Render):** [pizzeria-backend-laiv.onrender.com/api/pizzas](https://pizzeria-backend-laiv.onrender.com/api/pizzas)
 - **Repositorio:** [cesarscl/Pizzeria-Mama-Mia-Hito6](https://github.com/cesarscl/Pizzeria-Mama-Mia-Hito6)
 
