@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom"
 import { useCart } from "../context/CartContext"
+import { useUser } from "../context/UserContext"
 import { formatPrice } from "../utils/helpers"
 
 const Navbar = () => {
   const { total } = useCart()
-  const token = false
+  const { token, logout } = useUser()
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3 py-2">
@@ -13,11 +14,12 @@ const Navbar = () => {
 
         <div className="d-flex flex-wrap align-items-center gap-2">
           <Link to="/" className="btn btn-outline-light btn-sm">🍕 Home</Link>
-          {/* Profile queda visible mientras la autenticación sea estática */}
-          <Link to="/profile" className="btn btn-outline-light btn-sm">🔓 Profile</Link>
 
           {token ? (
-            <button className="btn btn-outline-light btn-sm">🔒 Logout</button>
+            <>
+              <Link to="/profile" className="btn btn-outline-light btn-sm">🔓 Profile</Link>
+              <button className="btn btn-outline-light btn-sm" onClick={logout}>🔒 Logout</button>
+            </>
           ) : (
             <>
               <Link to="/login" className="btn btn-outline-light btn-sm">🔐 Login</Link>

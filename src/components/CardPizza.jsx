@@ -30,8 +30,7 @@ const CardPizza = ({ id, name, price, ingredients, img }) => {
           </p>
 
           <div className="d-flex justify-content-between mt-auto">
-            {/* Por ahora la ruta del detalle es fija; en el siguiente hito será dinámica */}
-            <Link to="/pizza/p001" className="btn btn-outline-secondary btn-sm">
+            <Link to={`/pizza/${id}`} className="btn btn-outline-secondary btn-sm">
               Ver Más 👀
             </Link>
             <button className="btn btn-dark btn-sm" onClick={() => addToCart({ id, name, price, img })}>

@@ -1,6 +1,6 @@
 # Pizzería Mamma Mia!
 
-Hito 6 - Context API | Desafío Latam - Fullstack JS
+Hito 7 - React Router II | Desafío Latam - Fullstack JS
 
 ## Accesos
 
@@ -10,15 +10,15 @@ Hito 6 - Context API | Desafío Latam - Fullstack JS
 
 > El backend está en el plan gratuito de Render y podría estar inactivo al momento de la evaluación: la primera carga puede tardar cerca de un minuto.
 
-## Hito 6: carrito con Context API
+## Hito 7: useParams y rutas protegidas
 
-El carrito es un estado global (`CartContext`) que parte vacío:
+- [x] **Pizza** obtiene el `id` con `useParams` (`/pizza/:id`) y consulta `GET /api/pizzas/:id`. El botón **Ver Más** de cada tarjeta lleva a su pizza.
+- [x] `UserContext` guarda el `token` simulado (por defecto `true`) y el método `logout`, que lo deja en `false`.
+- [x] El **Navbar** usa el contexto: con token muestra Profile y Logout (que ejecuta `logout`); sin token, Login y Register. Home y Total siempre visibles.
+- [x] En **Cart**, el botón Pagar se deshabilita si el token es `false`.
+- [x] `/profile` es una ruta protegida: sin token redirige a `/login`. Con token, `/login` y `/register` redirigen a `/`.
 
-- [x] `CartProvider` maneja el carrito: `addToCart`, `increase`, `decrease`, `removeFromCart` y `total`.
-- [x] El **Navbar** muestra el total del carrito desde el contexto.
-- [x] El botón **Añadir** de cada tarjeta en Home agrega la pizza al carrito.
-- [x] La página **Cart** muestra las pizzas agregadas; `+` suma, `-` resta (en 0 se elimina) y 🗑 la quita.
-- [x] El total es el mismo en Cart y en el Navbar.
+> Para volver a tener sesión después del logout, recarga la página: el token vuelve a `true`.
 
 ## Hitos anteriores
 
@@ -29,27 +29,28 @@ El carrito es un estado global (`CartContext`) que parte vacío:
 | 3 | Menú con `.map()` y carrito con `+` / `-` y total |
 | 4 | Pizzas desde la API con `useEffect` y `fetch` (Home y detalle `p001`) |
 | 5 | Rutas con React Router, carpeta `pages`, Profile y NotFound |
+| 6 | Carrito global con Context API (`CartContext`): añadir, `+` / `-` / 🗑 y mismo total en Navbar y Cart |
 
 ## Rutas
 
 | Ruta | Página |
 |---|---|
 | `/` | Home |
-| `/register` | Register |
-| `/login` | Login |
+| `/register` | Register (sin token) |
+| `/login` | Login (sin token) |
 | `/cart` | Cart |
-| `/pizza/p001` | Pizza |
-| `/profile` | Profile |
+| `/pizza/:id` | Pizza (ej. `/pizza/p001` … `/pizza/p006`) |
+| `/profile` | Profile (requiere token) |
 | `/404` y rutas inexistentes | NotFound |
 
 ## Estructura
 
 ```
 src/
-├── main.jsx        → CartProvider > BrowserRouter > App
-├── App.jsx         → Navbar + Routes + Footer
+├── main.jsx        → UserProvider > CartProvider > BrowserRouter > App
+├── App.jsx         → Navbar + Routes (con rutas protegidas) + Footer
 ├── components/     → Navbar, Header, CardPizza, Message, Footer
-├── context/        → CartContext.js (contexto + useCart), CartProvider.jsx
+├── context/        → CartContext.js + CartProvider.jsx, UserContext.js + UserProvider.jsx
 ├── pages/          → Home, Pizza, Register, Login, Cart, Profile, NotFound
 ├── utils/helpers.js
 └── pizzas.js

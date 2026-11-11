@@ -1,41 +1,50 @@
 import { useEffect, useState } from "react"
+import { Link, useParams } from "react-router-dom"
 import { useCart } from "../context/CartContext"
 import { API_URL, formatPrice, handleImgError } from "../utils/helpers"
 
-// Por ahora el id es fijo; en el siguiente hito será dinámico
-const PIZZA_ID = "p001"
-
 const Pizza = () => {
-  const [pizza, setPizza] = useState(null)
-  const [error, setError] = useState("")
+  // id de la pizza tomado de la URL (/pizza/:id)
+  const { id } = useParams()
+  // Se guarda junto al id consultado, para no mostrar la pizza anterior al cambiar de URL
+  const [result, setResult] = useState({ id: null, pizza: null, error: "" })
   const { addToCart } = useCart()
 
-  // Consume la API para obtener una sola pizza al montar el componente
+  // Consume la API cada vez que cambia el id
   useEffect(() => {
+    let ignore = false
     const getPizza = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/pizzas/${PIZZA_ID}`)
-        if (!res.ok) throw new Error(`Error ${res.status}`)
+        const res = await fetch(`${API_URL}/api/pizzas/${id}`)
+        if (res.status === 404) throw new Error("Pizza no encontrada.")
+        if (!res.ok) throw new Error("No se pudo cargar la pizza. Revisa que el backend esté levantado.")
         const data = await res.json()
-        setPizza(data)
-      } catch {
-        setError("No se pudo cargar la pizza. Revisa que el backend esté levantado.")
+        if (!ignore) setResult({ id, pizza: data, error: "" })
+      } catch (err) {
+        const message = err instanceof TypeError ? "No se pudo cargar la pizza. Revisa que el backend esté levantado." : err.message
+        if (!ignore) setResult({ id, pizza: null, error: message })
       }
     }
     getPizza()
-  }, [])
+    return () => {
+      ignore = true
+    }
+  }, [id])
 
-  if (error) {
+  if (result.id !== id) {
+    return <p className="container my-5 text-center text-secondary">Cargando pizza...</p>
+  }
+
+  if (result.error) {
     return (
-      <main className="container my-5">
-        <div className="alert alert-danger">{error}</div>
+      <main className="container my-5 text-center">
+        <div className="alert alert-danger">{result.error}</div>
+        <Link to="/" className="btn btn-dark">Volver al inicio</Link>
       </main>
     )
   }
 
-  if (!pizza) {
-    return <p className="container my-5 text-center text-secondary">Cargando pizza...</p>
-  }
+  const { pizza } = result
 
   return (
     <main className="container my-5">

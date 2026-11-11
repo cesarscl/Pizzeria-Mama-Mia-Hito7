@@ -1,8 +1,10 @@
 import { useCart } from "../context/CartContext"
+import { useUser } from "../context/UserContext"
 import { formatPrice, handleImgError } from "../utils/helpers"
 
 const Cart = () => {
   const { cart, increase, decrease, removeFromCart, total } = useCart()
+  const { token } = useUser()
 
   return (
     <main className="container my-5" style={{ maxWidth: "640px" }}>
@@ -40,7 +42,8 @@ const Cart = () => {
       </ul>
 
       <h3 className="mt-4">Total: ${formatPrice(total)}</h3>
-      <button className="btn btn-dark mt-2">Pagar</button>
+      <button className="btn btn-dark mt-2" disabled={!token}>Pagar</button>
+      {!token && <p className="text-secondary small mt-2 mb-0">Inicia sesión para poder pagar.</p>}
     </main>
   )
 }
